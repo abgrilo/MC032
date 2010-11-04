@@ -15,6 +15,7 @@
 \newtheorem{definicao}{Definição}
 \newtheorem{lema}{Lema}
 \newtheorem{coro}{Corolário}
+\newtheorem{teo}{Teorema}
 
 
 \section{Introdução}
@@ -39,7 +40,8 @@ Para isso, utiliza-se a técnica de SVD e
 \subsection{Notação}
 
 $A$ : matriz de recomendação original
-$A_(i)$ : $i-ésima$ linha da matriz A. No caso da matriz de recomendações, é o vetor de utilidades do $i-ésimo$ usuário.
+$A_{(i)}$ : $i-ésima$ linha da matriz A. No caso da matriz de recomendações, é o vetor de utilidades do $i-ésimo$ usuário.
+$A^{(i)}$ : $i-ésima$ coluna a matriz A. No caso da matriz de recomendações, é a utilidade de um produto para todos os usuários.
 $A_{ij}$ : valor da utilidade do projeto j para o usuário i
 $a_{ir}$ : valor da utilidade do $r-ésimo$ produto com maior utilidade para o usuário i 
 
@@ -156,12 +158,11 @@ Assume-se que cada tipo efetivo contenha pelo menos $\frac{\lambda m}{100k}$ usu
 2. Escolher $\beta k$ produtos específicos e perguntar sua utilidade para todos os outros usuários
 3. Classificar cada usuário
 
+
+\subsubsection{Escolha das linhas}
+
 A escolha de um número constante de linhas, é a ideia de usuários que respondam um questionário sobre todos os produtos para que os outros usuários sejam
 classificados a partir destes. 
-
-A ideia de escolher um número constante de colunas acontece pois todos os usuários que desejam obter uma recomendação devem responder inicialmente um pequeno 
-questionário, dando alguma informação sua para que seja receba recomendações precisas e efetivas.
-
 
 \begin{lema}
  Se selecionarmos aleatóriamente $O(k ln (k) )$ usuários, a probabilidade de que algum tipo efetivo tenha um usuário selecionado é menor que $1\%$.
@@ -170,6 +171,76 @@ questionário, dando alguma informação sua para que seja receba recomendaçõe
 \paragraph{Ideia de prova:} 
 A probabilidade de não selecionar um tipo $i$ em é $(1 - \frac{t_i}{m})^{ak}$, pois a probabilidade de um usuário ser selecionado é uma variável
 aleatória de Bernoulli de parâmetro $\frac{t_i}{m}$. Utilizando o limite da união e selecionando $a = O(log k)$, encontramos o limite proposto no enunciado.
+
+
+Portanto a partir da escolha das $ak$ linhas, podemos formar a matri\ $V$ de tipos efetivos.
+
+\subsubsection{Escolha das colunas}
+
+A ideia de escolher um número constante de colunas acontece pois todos os usuários que desejam obter uma recomendação devem responder inicialmente um pequeno 
+questionário, dando alguma informação sua para que seja receba recomendações precisas e efetivas.
+
+A partir da matriz $V$ calculada previamente, podemos selecionar as $\beta k$ colunas, de uma maneira em que cada  
+coluna $i$ tem probabilidade $\frac{\vert V^{(i)} \vert^2}{\Vert V \Vert^2_F}$. Com 
+isso, escolheremos os produtos "mais pesados", que ajudarão a decidir se um usuário está ou não naquele tipo.
+
+\begin{lema}
+Se for descoberta a utilidade para os $\beta k$ produtos selecionados para um vetor
+de x de utilidade de um usuário, pode-se aproximar $V x$ por \~v tal que 
+
+$\vert V x  - $~v$ \vert^2_2 \leq \frac{1}{\beta p}$
+
+com probabilidade $1 - p$, $0 < p < 1$.
+\end{lema}
+
+\paragraph{Ideia da prova:}
+
+Seja a aproximação ~v tal que ~v$_i = \frac {V^{(i)}}{sqrt(\beta k p_i)} \frac{x_i}{sqrt(\beta k p_i)}$.
+ A partir disso podemos provar a aproximação de ~v e $Vx$ a partir da esperança e variância de ~v.
+
+
+\begin{coro}
+Se $\beta = \frac{10}{9p}$ e a matriz é $0.1$-separado com probabilidade $1 - p$
+nós podemos classificar todos os usuários pertencentes aos tipos efetivos. Logo o 
+algoritmo é $\lambda$-competitivo  para utilidade.
+\end{coro}
+
+\subsection{Aproximando por amostras}
+
+Agora será descrito um algoritmo para matriz em que não assumimos as restrições
+do algoritmo anterior. Somente será necessário que a matriz $A$ tenha uma boa 
+aproximação com $A_k$.
+
+\subsubsection{Algoritmo}
+
+1. Seleciona $r$ linhas de maneira uniforme
+
+2. Selecionar $c$ colunas de onde a probabilidade de selecionar uma coluna $j$ ser selecionada 
+é  $q_j \geq \vert \frac{A^{(j)} \vert^2}{\Vert A \Vert^2_F}$
+
+3. Montar a matriz C com as colunas $\frac{A^(j)}{sqrt(cq_j)}$, $j = 1 .. c$.
+
+4. Encontrar os k primeiros vetores singulares de C, denotados por $U_k$.
+
+5. Criar a matriz Ã tal que 
+
+Ã$_{(i)}  = \frac{A_{(i)}}{rm}$, se i foi uma linha selecionada ou $0^n$ caso contrário.
+
+6. Retornar $\^A = $~U$_k$~U$_k^T$Ã
+
+
+\begin{teo}
+Seja $\sigma_t$ o $t-ésimo$ valor singular de A e $\rho$ é o posto de A. Utilizando
+o algoritmo proposto acima, 
+
+$E(\Vert A - $~U$_k$~U$_k^T$Ã$ \Vert^2_F) \leq \sum_{t = k + 1}^\rho \sigma_t^2 + 
+(sqrt(\frac{k}{\beta c}))  + \frac{k}{ar})\Vert A \Vert^2_F
+$
+\end{teo}
+
+\paragraph{Ideia de prova:} Utilizando os lemas da TODO:referencia e 
+analizando TODO:terminar
+
 
 
 \addcontentsline{toc}{section}{\bibname}
