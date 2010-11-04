@@ -144,11 +144,33 @@ E se a matriz A é $(\lambda, k)$-efetiva, segue que
 $\Vert$ Ã$_k - A_k\Vert^2_F \geq  O(\epsilon + 1 - \lambda)\Vert A \Vert^2_F $
 \end{coro}
 
-\section{Ã desconhecida}
+\subsection{Ã desconhecida}
 
 Apesar de termos encontrado que Ã$_k$ e $A$ são próximas, um problema é que a matriz Ã é desconhecida. Nós buscamos um algoritmo que com amostra de $O(m+n)$ elementos, se consiga reconstruir a matriz e dar boas recomendações. 
 
-Assume-se que cada tipo efetivo 
+Assume-se que cada tipo efetivo contenha pelo menos $\frac{\lambda m}{100k}$ usuários.
+
+\subsubsection{Algoritmo}
+
+1. Escolher uniformemente $ak$ usuários e escolher a utilidade de todos produtos a eles
+2. Escolher $\beta k$ produtos específicos e perguntar sua utilidade para todos os outros usuários
+3. Classificar cada usuário
+
+A escolha de um número constante de linhas, é a ideia de usuários que respondam um questionário sobre todos os produtos para que os outros usuários sejam
+classificados a partir destes. 
+
+A ideia de escolher um número constante de colunas acontece pois todos os usuários que desejam obter uma recomendação devem responder inicialmente um pequeno 
+questionário, dando alguma informação sua para que seja receba recomendações precisas e efetivas.
+
+
+\begin{lema}
+ Se selecionarmos aleatóriamente $O(k ln (k) )$ usuários, a probabilidade de que algum tipo efetivo tenha um usuário selecionado é menor que $1\%$.
+\end{lema}
+
+\paragraph{Ideia de prova:} 
+A probabilidade de não selecionar um tipo $i$ em é $(1 - \frac{t_i}{m})^{ak}$, pois a probabilidade de um usuário ser selecionado é uma variável
+aleatória de Bernoulli de parâmetro $\frac{t_i}{m}$. Utilizando o limite da união e selecionando $a = O(log k)$, encontramos o limite proposto no enunciado.
+
 
 \addcontentsline{toc}{section}{\bibname}
 \bibliographystyle{plain}
