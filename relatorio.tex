@@ -15,38 +15,50 @@
 \newtheorem{definicao}{Definição}
 \newtheorem{lema}{Lema}
 \newtheorem{coro}{Corolário}
+\newtheorem{teo}{Teorema}
 
 
 \section{Introdução}
+
+O objetivo deste relatório é descrever os assuntos estudados durante a 
+disciplina de MC032 no segundo semestre de 2010. 
+
+O principal interesse deste trabalho foi pesquisar na listeratura este
+problema diferentes abordagens para resolvê-lo.
+
+TODO:explicar estrutura do relatório
+
+\section{Sistemas de recomendações}
 
 Um sistema de recomendação considera quais produtos cada usuário
 escolheu no passado e tenta deduzir que outros produtos um determinado
 usuário pode estar interessado. 
 
-O principal interesse deste trabalho é investigar este problema sob a
-abordagem algorítmica.
 
 \section{Competitive Recommendation Systems}
 
 
 \subsection{Introdução}
 A ideia basica da primeira abordagem é baseada nas técnicas de 
-reconstru\c{c}\~ao da matriz a partir de informa\c{c}\~oes parciais
+reconstrução da matriz a partir de informações parciais
 da mesma. 
 
-Para isso, utiliza-se a técnica de SVD e 
+Nela, foram utilizadas as técnicas de reconstrução a partir
+de técnicas de SVD.
 
 \subsection{Notação}
 
-$A$ : matriz de recomendação original
-$A_(i)$ : $i-ésima$ linha da matriz A. No caso da matriz de recomendações, é o vetor de utilidades do $i-ésimo$ usuário.
-$A_{ij}$ : valor da utilidade do projeto j para o usuário i
-$a_{ir}$ : valor da utilidade do $r-ésimo$ produto com maior utilidade para o usuário i 
+\begin{itemize}
+\item[$A$] matriz de recomendação original
+\item[$A_{(i)}$] $i$-ésima linha da matriz A. No caso da matriz de recomendações, é o vetor de utilidades do $i$-ésimo usuário.
+\item[$A^{(i)}$] $i$-ésima coluna a matriz A. No caso da matriz de recomendações, é a utilidade de um produto para todos os usuários.
+\item[$A_{ij}$] valor da utilidade do projeto j para o usuário i
+\item[$a_{ir}$] valor da utilidade do $r$-ésimo produto com maior utilidade para o usuário $i$ 
+\end{itemize}
 
 \subsection{Definições}
 
-
-\begin{definicao} \label{definicao:box} Um produto j é dito bom se para um usuário $i$ se $A_{ij} > a_{ir} - \delta$para o $r$ constante e $\delta$ pequeno.
+\begin{definicao} \label{definicao:box} Um produto j é dito bom para um usuário $i$ se $A_{ij} > a_{ir} - \delta$para o $r$ constante e $\delta$ pequeno.
 \end{definicao}
 \begin{definicao} \label{definicao:box}Uma recomendação é dita boa para um usuário $i$ se contém pelo menos um produto bom para aquele usuário.
 \end{definicao}
@@ -54,31 +66,39 @@ $a_{ir}$ : valor da utilidade do $r-ésimo$ produto com maior utilidade para o u
 \subsection{Reconstrução de matrizes e boas recomendações}
 
 \begin{lema} \label{lema:box}
-Dado que existe uma aproximação Â tal que $\Vert A - $Â$ \Vert \le \epsilon \Vert A \Vert^2_F$ a probabilidade de uma recomenda\c{c}\~ao
-ruim é
- 
+Dado que existe uma aproximação Â tal que $\Vert A - $Â$ \Vert \le \epsilon \Vert A \Vert^2_F$, a probabilidade de uma recomenda\c{c}\~ao
+ruim é 
+\\ \\ 
 $Pr [ $recomendação ruim$ ] \leq \frac{2\varepsilon}{r\delta^2}$
 
 \end{lema}
 
 \paragraph{Ideia da prova:}
   
-A menor contribuição que uma má recomendação contribui para o erro de $\Vert A - \^A \Vert \le \Vert A \Vert^2_F$ é quando os $r$ produtos com utilidade maior de $A_{(i)}$ possuem utilidade $u$ e os $r$ seguinte produtos com utilidade maior possuem utilidade $u - \delta$.
+A menor contribuição de uma recomendação ruim para o erro de $\Vert A - 
+$Â$ \Vert \le \Vert A \Vert^2_F$ é quando os $r$ produtos com maior utilidade 
+de $A_{(i)}$ possuem valor igual a $u$ e os $r$ produtos com maior utilidade
+dentre os outros produtos possuem utilidade $u - \delta$.
  
-   Em $Â_{(i)}$, para a recomendação ser ruim, os $r$ produtos mais avaliados possuem utilidade $\leq x$ e os $r$ produtos seguintes possuem utilidade $\geq x$. Isso acontece quando $x = u - \frac{\delta}{2}$. 
+Para uma recomendação ser ruim, os $r$ produtos melhor avaliados de Â$_{(i)}$
+possuem utilidade $\leq x$ e os $r$ produtos seguintes possuem utilidade
+$\geq x$. No caso extremo, isso acontece quando $x = u - \frac{\delta}{2}$. 
 
-   Calculando o erro a partir desses dados, assumindo que $\lambda m$ usuários tem uma recomendação ruim e sabendo que o erro é limitado por $\epsilon \vert A \vert^2_F$, obtem-se o resultado proposto no enunciado.
+Calculando o erro a partir desses dados, assumindo que $\lambda m$ usuários
+tem uma recomendação ruim e sabendo que o erro é limitado por $\epsilon \Vert
+A \Vert^2_F$, obtem-se o resultado proposto no enunciado.
 
 \subsection{Modelo de usuários}
 
-Vamos assumir a existência de $l$ tipos de usuários, caracterizados
-pelos vetores $v^{(1)}$, ..., $v^{(l)} \in $ [$0,1$]$^n$
-, onde cada vetor possui
-tamanho 1 e são "bem separados". Intuitivamente, isso significa que os tipos
+Assumimos que existem $l$ tipos de usuários, caracterizados
+pelos vetores $v^{(1)}$, ..., $v^{(l)} \in $ [$0,1$]$^n$, 
+e que cada vetor é unitário e todos são "bem separados".
+Intuitivamente, isso significa que os tipos
 são linearmente independentes. 
 
-\begin{definicao} \label{definicao:box} Os vetores $v^{(1)}$, ..., $v^{(l)}$ são chamados $\delta $ -separados se para
-cada par $(i,j)$ tal que $i \neq j$, $v^{(i)} \dot v^{(j)} \leq \delta $
+\begin{definicao} \label{definicao:box} Os vetores $v^{(1)}$, ..., $v^{(l)}$
+são chamados $\delta$ -separados se para cada par $(i,j)$ tal que $i \neq j$,
+$v^{(i)} . v^{(j)} \leq \delta $
 \end{definicao}
 
 Chamaremos $t_j$ o número de usuários do tipo $j$. 
@@ -86,91 +106,204 @@ Chamaremos $t_j$ o número de usuários do tipo $j$.
 Assumiremos que os tipos estão ordenados pela ordem decrescente do número de usuários e que os usuários estão ordenados na matriz $A$ na ordem crescente do tipo ao qual pertencem.  
 
 \begin{definicao} \label{definicao:box} Uma matriz de preferência A é dita $(\lambda,k)$-efetiva se 
-
+\\ \\
 $\sum^k_{i=1} t_i \geq \lambda m$
 \end{definicao}
 
 \begin{lema} \label{lema:box}
-Para uma matriz $(\lambda,k)$-efetiva na forma de A  $\Vert A - $Â$ \Vert \le ( 1 - \lambda ) \Vert A \Vert^2_F$ 
+Para uma matriz $(\lambda,k)$-efetiva na forma de A 
+$\\ \\$
+ $\Vert A - $Â$ \Vert \le ( 1 - \lambda ) \Vert A \Vert^2_F$ 
 \end{lema}
 \paragraph{Ideia de prova:}
 
-Dado que $A_k$ é a melhor aproximação de posto $k$ de A, pela construção acima da matriz $A$, a matriz $B_k$ consistente somente dos $k$ primeiros tipos da matriz possui aproximação 
+Pela construção da matriz $A$, podemos construir a matriz $B_k$ somente
+com os vetores dos primeiros $k$ tipos da matriz. A matriz $B_k$ possui
+aproximação 
+
 $\Vert A - B_k\Vert^2_F \leq ( 1 - \lambda ) \Vert A \Vert^2_F$.
 
-Portanto a matriz $A_k$ tem uma aproximação pelo menos igual a anterior.
+Portanto a matriz $A_k$, a melhor aproximação de posto $k$ da matriz A, tem uma
+aproximação pelo menos igual a anterior.
 
 \subsection{Desvio nas utilidades dos produtos}
 
+Consideraremos que a partir da matriz $A$ proposta na subseção anterior, é
+adicionado um erro, pois no mundo real, os produtos não possuem exatamente
+a mesma utilidade para todos usuários do mesmo tipo.
 
-\begin{definicao} \label{definicao:box} Os vetores $v^{(1)}$, ..., $v^{(l)}$ são chamados $\delta $ -separados se para
-cada par $(i,j)$ tal que $i \neq j$, $v^{(i)} \dot v^{(j)} \leq \delta $
-\end{definicao}
-Consideraremos que a partir da matriz $A$ proposta na subseção anterior, é adicionado um erro, pois os produtos não possuem exatamente a mesma utilidade para todos usuários do mesmo tipo. Modelaremos o erro adicionando à matriz $A$ uma matriz de erro $E$ tal que $E_ij$ é uma variável aleatória de média 0 e variância $O(\frac{\epsilon^2}{m} + n )$ para $0 < \epsilon < 1$.
+ Modelaremos o erro adicionando à matriz $A$ uma matriz de erro $E$ tal
+que $E_{ij}$ é uma variável aleatória de média 0 e variância 
+$O(\frac{\epsilon^2}{m} + n )$ para $0 < \epsilon < 1$.
 
 Chamaremos de Ã a matriz $ A + E $.
 
 \subsection{Limitantes na aproximação de posto menor}
 
-O primeiro objetivo é provar que Ã$_k$ e $A$ são próximas, assim poderemos recriar de forma eficiente a matriz $A$ e fazer boas recomendações de produtos. 
+O primeiro objetivo é provar que Ã$_k$ e $A$ são próximas, assim poderemos
+recriar de forma eficiente a matriz $A$ e fazer boas recomendações de 
+produtos. 
 
 \begin{lema}
  Se $\sigma_1, ..., \sigma_k$ os valores singulares de $A$, $A$ é $\delta$-separada com $\delta = O(\frac{1}{n})$ e $\frac{t_k}{t_{k+1}} \geq \beta_1 \frac{t_1}{t_k}$, onde $\beta_1$ é uma constante grande, então 
-
+$\\ \\$
 $\frac{\sigma_k}{\sigma_{k+1}} \geq \beta_2 \frac{\sigma_1}{\sigma_{k}}$
+$\\ \\$
 para alguma constante $\beta_2 = O (sqrt(\beta_1))$.
 
 \end{lema}
-\paragraph{Ideia da prova:} Analizando $A_\delta$ e $A_0$, pode-se verificar que $A_\delta A_\delta^T - A_0 A_0^T$ possui 2-norma no máximo $n \delta$.
+\paragraph{Ideia da prova:} Analisando $A_\delta$ e $A_0$, pode-se verificar que $A_\delta A_\delta^T - A_0 A_0^T$ possui 2-norma no máximo $n \delta$.
 
 Aplicando teoria padrão de perturbação para valores singulares de matrizes simétricas, pode-se concluir que os valores singulares de $A_\delta$ são perturbados somente por uma constante. Escolhendo $\beta_1$ e $\beta_2$ cuidadosamente o resultado é válido. 
 
-
+$\\ \\ \\$
 Utilizando o lema acima e os lemas do TODO:por bibliografia, obtemos os seguintes corolários:
   
 \begin{coro} 
 Como $\vert E \vert_2 = O(\epsilon)$, com probabilidade  $ 1 - o(1) $
 
-$\vert ($Ã$_k)_{(i)} - (A_k)_{(i)}\vert_2 \geq O(\epsilon)$ e \end{coro}
+$\vert ($Ã$_k)_{(i)} - (A_k)_{(i)}\vert_2 \geq O(\epsilon)$ \end{coro}
+
 
 \begin{coro} Com probabilidade $1- o(1)$, temos 
 
 $\Vert$ Ã$_k - A_k\Vert^2_F \geq O(\epsilon)m \geq O(\epsilon)\Vert A \Vert^2_F $
 \end{coro}
 
-E se a matriz A é $(\lambda, k)$-efetiva, segue que 
 \begin{coro}
+E se a matriz A é $(\lambda, k)$-efetiva, segue que 
 
 $\Vert$ Ã$_k - A_k\Vert^2_F \geq  O(\epsilon + 1 - \lambda)\Vert A \Vert^2_F $
 \end{coro}
 
 \subsection{Ã desconhecida}
 
-Apesar de termos encontrado que Ã$_k$ e $A$ são próximas, um problema é que a matriz Ã é desconhecida. Nós buscamos um algoritmo que com amostra de $O(m+n)$ elementos, se consiga reconstruir a matriz e dar boas recomendações. 
+Apesar da demonstração que Ã$_k$ e $A$ são próximas, um problema é que a
+matriz Ã é desconhecida. Nós buscamos agora um algoritmo que com amostra de
+$O(m+n)$ elementos, se consiga reconstruir a matriz e dar boas recomendações.
 
 Assume-se que cada tipo efetivo contenha pelo menos $\frac{\lambda m}{100k}$ usuários.
 
 \subsubsection{Algoritmo}
 
 1. Escolher uniformemente $ak$ usuários e escolher a utilidade de todos produtos a eles
+
 2. Escolher $\beta k$ produtos específicos e perguntar sua utilidade para todos os outros usuários
+
 3. Classificar cada usuário
 
-A escolha de um número constante de linhas, é a ideia de usuários que respondam um questionário sobre todos os produtos para que os outros usuários sejam
-classificados a partir destes. 
+\subsubsection{Escolha das linhas}
+
+A escolha de um número constante de linhas, segue a ideia de é ncessário que
+usuários que respondam um questionário sobre todos os produtos para que os
+outros usuários sejam classificados a partir destes. Na prática, empresas
+pagam pessoas para o preenchimento desses formulários.
+
+\begin{lema}
+Se selecionarmos aleatoriamente $O(k ln (k) )$ usuários, a probabilidade
+de que algum tipo efetivo não tenha nenhum usuário selecionado é menor que $1\%$.
+\end{lema}
+
+\paragraph{Ideia de prova:} 
+A probabilidade de nenhum usuário do tipo $i$ ser selecionado é $(1 - \frac{t_i}{m})^{ak}$,
+pois a probabilidade de um usuário ser selecionado é uma variável
+aleatória de Bernoulli de parâmetro $\frac{t_i}{m}$. Utilizando o limite da união e selecionando $a = O(log k)$, encontramos o limite proposto no enunciado.
+
+
+Portanto a partir da escolha das $ak$ linhas, podemos formar a matriz $V$ de tipos efetivos.
+
+\subsubsection{Escolha das colunas}
 
 A ideia de escolher um número constante de colunas acontece pois todos os usuários que desejam obter uma recomendação devem responder inicialmente um pequeno 
 questionário, dando alguma informação sua para que seja receba recomendações precisas e efetivas.
 
+A partir da matriz $V$ calculada previamente, podemos selecionar as $\beta k$ colunas, de uma maneira em que cada  
+coluna $i$ tem probabilidade $\frac{\vert V^{(i)} \vert^2}{\Vert V \Vert^2_F}$ de ser selecionada. Com 
+isso, escolheremos os produtos "mais pesados", que ajudarão a decidir se um usuário está ou não naquele tipo.
 
 \begin{lema}
- Se selecionarmos aleatóriamente $O(k ln (k) )$ usuários, a probabilidade de que algum tipo efetivo tenha um usuário selecionado é menor que $1\%$.
+Se for descoberta a utilidade para os $\beta k$ produtos selecionados para um vetor
+de x de utilidade de um usuário, pode-se aproximar $V x$ por \~v tal que 
+
+$\vert V x  - $\~v$ \vert^2_2 \leq \frac{1}{\beta p}$
+
+com probabilidade $1 - p$, $0 < p < 1$.
 \end{lema}
 
-\paragraph{Ideia de prova:} 
-A probabilidade de não selecionar um tipo $i$ em é $(1 - \frac{t_i}{m})^{ak}$, pois a probabilidade de um usuário ser selecionado é uma variável
-aleatória de Bernoulli de parâmetro $\frac{t_i}{m}$. Utilizando o limite da união e selecionando $a = O(log k)$, encontramos o limite proposto no enunciado.
+\paragraph{Ideia da prova:}
 
+Seja a aproximação \~v tal que \~v$_i = \frac {V^{(i)}}{sqrt(\beta k p_i)} \frac{x_i}{sqrt(\beta k p_i)}$.
+ A partir disso podemos provar a aproximação de \~v e $Vx$ a partir da esperança e variância de \~v.
+
+
+\begin{coro}
+Se $\beta = \frac{10}{9p}$ e a matriz é $0.1$-separado com probabilidade $1 - p$
+nós podemos classificar todos os usuários pertencentes aos tipos efetivos. Logo o 
+algoritmo é $\lambda$-competitivo  para utilidade.
+\end{coro}
+
+\subsection{Aproximando por amostras}
+
+Agora será descrito um algoritmo para matriz em que não assumimos as restrições
+do algoritmo anterior. Somente será necessário que a matriz $A$ tenha uma boa 
+aproximação com $A_k$.
+
+\subsubsection{Algoritmo}
+
+1. Seleciona $r$ linhas de maneira uniforme
+
+2. Selecionar $c$ colunas de onde a probabilidade de selecionar uma coluna $j$ ser selecionada 
+é  $q_j \geq \vert \frac{A^{(j)} \vert^2}{\Vert A \Vert^2_F}$
+
+3. Montar a matriz C com as colunas $\frac{A^(j)}{sqrt(cq_j)}$, $j = 1 .. c$.
+
+4. Encontrar os k primeiros vetores singulares de C, denotados por $U_k$.
+
+5. Criar a matriz Ã tal que 
+
+Ã$_{(i)}  = \frac{A_{(i)}}{rm}$, se i foi uma linha selecionada ou $0^n$ caso contrário.
+
+6. Retornar $\^A = $~U$_k$~U$_k^T$Ã
+
+
+\begin{teo}
+Seja $\sigma_t$ o $t-ésimo$ valor singular de A e $\rho$ é o posto de A. Utilizando
+o algoritmo proposto acima, 
+
+$E(\Vert A - $~U$_k$~U$_k^T$Ã$ \Vert^2_F) \leq \sum_{t = k + 1}^\rho \sigma_t^2 + 
+(sqrt(\frac{k}{\beta c}))  + \frac{k}{ar})\Vert A \Vert^2_F
+$
+\end{teo}
+
+\paragraph{Ideia de prova:} Utilizando os lemas da TODO:referencia e 
+analizando TODO:terminar
+
+\section{Improved Recommendation System}
+
+\subsection{Descrição}
+
+Nesta instância do problema, a utilidade do produto é um valor binário, ou seja, cada produto é categorizado como bom ou ruim .
+
+Nós chamamos bom(u) o conjunto de todos os produtos que são considerados bons pelo usuário u.
+
+Para analisar o algoritmo, assume-se que os usuários estão particionados em classes de equivalências denominadas tipos, onde cada tipo representa um conjunto de usuários com preferências similares. O sucesso do algoritmo depende da abundâcia de tipos grandes. 
+
+\begin{definicao}
+Um tipo $T$ é um conjunto de usuários $U(T)$ e um conjunto de produtos $P(T)$ tal que todos os produtos de $P(T)$ são bons para os usuários de $U(T)$.
+\end{definicao}
+
+\begin{definicao}
+Seja $\mathcal{T}$ uma coleção de tipos, $U(\mathcal{T}) = \bigcup _{T \in \mathcal{T}} U(T)$ 
+\end{definicao}
+
+\begin{definicao}
+Seja $0 < \lambda \leq 1$ e $k > 0$. Uma coleção de tipos $\mathcal{T}$ é uma $(\lambda, k)$-cobertura-de-tipos se $\vert U(\mathcal{T}) \vert \geq \lambda m$ e $\vert  U(T) \vert \geq \frac{m}{k}$ para todo tipo $T$ de $\mathcal{T}$. 
+\end{definicao}
+
+
+\begin{teo}
+  Seja $\gamma > 0 $. Se existir uma $(\lambda, k)$-cobertura-de-tipos para algum $\lambda > 0 $ e $k > 0$, então com probabilidade pelo menos $1 - \gamma$ o algoritmo $\mathcal{A}_centr(k, \gamma)$ gera um conjunto de recomendações que satisfaz $\lambda m$ usuários com complexidade de recomendação e tempo de $O(k(m+n)log\frac{k}{\gamma})$.
+\end{teo}
 
 \addcontentsline{toc}{section}{\bibname}
 \bibliographystyle{plain}
