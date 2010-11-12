@@ -1,4 +1,5 @@
 \documentclass[a4paper,10pt]{article}
+
 \usepackage[brazilian]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -10,7 +11,6 @@
 \author{Alex Grilo \\ Orientador Flávio Keidi Miyazawa\\ MC032 - Estudo Dirigido \\ \normalsize{Instituto de Computação -- Universidade Estadual de Campinas}}
 
 \begin{document}
-
 \maketitle
 
 \newpage
@@ -24,32 +24,32 @@
 \newtheorem{coro}{Corolário}
 \newtheorem{teo}{Teorema}
 
-\nocite{golub}
+\nocite{golub, saia, papadimitriou, watkins, vempala}
 \section{Introdução}
 
 O objetivo deste relatório é descrever os assuntos estudados durante a 
-disciplina de MC032 no segundo semestre de 2010.  \\ \\ 
-O principal interesse deste trabalho foi pesquisar na literatura este
-problema diferentes abordagens para resolvê-lo.
-
-Na seção \ref{sec:sistemas_rec} é descrito brevemente em linhas gerais
-o que é um sistema de recomendações.
-
-Nas seções ~\ref{sec:competitive} e ~\ref{sec:improved} são mostradas as
+disciplina de MC032 no segundo semestre de 2010. O principal interesse
+deste trabalho foi pesquisar na literatura sobre
+o problema de sistemas de recomendações e diferentes abordagens para resolvê-lo. \\\\
+Na seção 2 é descrito em linhas gerais o que é um sistema de recomendações. \\ \\
+Nas seções 3 e 4 são mostradas as
 principais ideias encontradas nos trabalhos  \cite{drineas} e \cite{baruch},
-respectivamente.
+respectivamente. \\ \\
+Na seção 5 encontra-se a conclusão do estudo e ideias para trabalhos futuros.
 
 \newpage
 
-\section{Sistemas de recomendações}\label{sec:sitemas_rec}
+\section{Sistemas de recomendações}\label{sec:sitemas_rec}{}
 
-Um sistema de recomendação considera quais produtos cada usuário
-escolheu no passado e tenta deduzir que outros produtos um determinado
-usuário pode estar interessado. 
+Um sistema de recomendações tem como objetivo recomendar a usuários
+produtos que o agradem. Para isso, o sistema de recomedações se baseia
+inicialmente em respostas já conhecidas de outros usuários e alguma
+informação sobre o usuário que deseja obter uma recomendação. \\ \\
+O conjunto de informação inicial que o sistema de recomendações já
+possui é utilizado para comparar com a informação obtida do usuário
+em questão para tentar deduzir quais outros produtos interessam
+ao usuário. 
 
-Para isso, ele se baseia também em respostas já conhecidas de outros 
-usuários, para utilizar como comparação à informação que já dispõe
-do usuário que receberá a recomendação.
 
 \newpage
 
@@ -59,22 +59,21 @@ do usuário que receberá a recomendação.
 
 A ideia básica desta abordagem é reduzir o problema de sistema de recomendações
 no problema de reconstrução de matrizes a partir de informações parciais da mesma. 
-Foram utilizadas estratégias de reconstrução de matrizes a partir
-informações parciais baseadas na técnica de SVD, encontrando boas aproximações
+Foram utilizadas estratégias de reconstrução de matrizes
+baseadas na técnica de SVD, encontrando boas aproximações
 para a matriz original 
 
 \subsubsection{Divisão em tipos}
 Assume-se que os usuários podem ser divididos em grupos com interesses semelhantes,
-classificando-os em tipos. \\ 
-
+classificando-os em tipos. \\ \\ 
 Consideraremos que $k$ seja o número de tipos, onde $k$ é
 uma constante que não depende do número de usuários.
 
 \subsubsection{Qualidade dos algoritmos}
 
 Um bom algoritmo de recomendações deve dar boas recomendações utilizando o mínimo de 
-informação possível. Para medir a qualidade de um algoritmo de recomendação
-são estabelecidas 2 métricas para algoritmos de recomendações.
+informação possível. São estabelecidas 2 métricas para medir a qualidade de um algoritmo
+de recomendações.
 
 \begin{definicao}
  Um algoritmo é $c-competitivo$ $para$ $amostragem$ se usa somente $ck$
@@ -95,8 +94,8 @@ Nesta seção, a seguinte notação será utilizada:
 \item[$A_{ij}$] valor da utilidade do produto $j$ para o usuário $i$
 \item[$A_{(i)}$] $i$-ésima linha da matriz $A$, que corresponde ao
 vetor de utilidades do \\ $i$-ésimo usuário.
-\item[$A^{(i)}$] $i$-ésima coluna a matriz $A$, que correspodne à 
-a utilidade de um produto para todos os usuários.
+\item[$A^{(i)}$] $i$-ésima coluna a matriz $A$, que corresponde à 
+utilidade de um produto para todos os usuários.
 \item[$A_k$] Melhor aproximação com posto $k$ de $A$, obtida através da técnica de SVD.
 \item[$a_{ir}$] valor da utilidade do $r$-ésimo produto com maior utilidade
 para o \\ usuário $i$ 
@@ -124,17 +123,13 @@ Pr [ recomenda \c{c}c \tilde ao \;\; ruim ] \leq \frac{2\varepsilon}{r\delta^2}
 
 \end{lema}
 
-\paragraph{Ideia da prova\\}
-
-A menor contribuição de uma recomendação ruim para o erro de $\Vert A - 
+\paragraph{Ideia da prova}$\\$ A menor contribuição de uma recomendação ruim para o erro de $\Vert A - 
 \hat{A} \Vert$ é quando os $r$ produtos com maior utilidade 
 de $A_{(i)}$ possuem valor igual a $u$ e os $r$ produtos com maior utilidade
-dentre os outros produtos possuem utilidade $u - \delta$.
- 
+dentre os outros produtos possuem utilidade $u - \delta$. \\ \\ 
 Para uma recomendação ser ruim, os $r$ produtos melhor avaliados de $\hat{A}_{(i)}$
 possuem utilidade $\leq x$ e os $r$ produtos seguintes possuem utilidade
-$\geq x$. No caso extremo, isso acontece quando $x = u - \frac{\delta}{2}$. 
-
+$\geq x$. No caso extremo, isso acontece quando $x = u - \frac{\delta}{2}$. \\ \\
 Calculando o erro a partir desses dados e sabendo que o erro é limitado por $\epsilon 
 \Vert A \Vert^2_F$, obtem-se o resultado proposto no enunciado.
 
@@ -143,16 +138,14 @@ Calculando o erro a partir desses dados e sabendo que o erro é limitado por $\e
 \subsubsection{Tipos de usuários}
 Assumimos que existem $l$ tipos de usuários, caracterizados
 pelos vetores $v^{(1)}$, ..., $v^{(l)} \in $ [$0,1$]$^n$, 
-e que cada vetor é unitário. 
-
+e que cada vetor é unitário.  \\ \\
 Assumimos também que os vetores são  "bem separados", o que
 intuitivamente significa que os tipos são linearmente independentes. 
 
 \begin{definicao} \label{definicao:box} Os vetores $v^{(1)}$, ..., $v^{(l)}$
 são chamados $\delta$ -separados se para cada par $(i,j)$ tal que $i \neq j$,
 $v^{(i)} . v^{(j)} \leq \delta $
-\end{definicao}
-
+\end{definicao} $\\ $
 Chamaremos $t_j$ o número de usuários do tipo $j$ e assumiremos que os tipos
 estão ordenados pela ordem decrescente do número de usuários.
 
@@ -165,17 +158,15 @@ estão ordenados pela ordem decrescente do número de usuários.
 $\\ $
 
 \begin{lema} \label{lema:box}
-Para uma matriz $(\lambda,k)$-efetiva na forma de A,  
+Para uma matriz $(\lambda,k)$-efetiva A,  
 $\\ \\$
 \begin{equation}
  \Vert A - {A}_k \Vert \le ( 1 - \lambda ) \Vert A \Vert^2_F 
 \end{equation}
 \end{lema}
-\paragraph{Ideia de prova\\}
-
-Pela construção da matriz $A$, podemos construir a matriz $B_k$ somente
-com os vetores dos primeiros $k$ tipos da matriz. Pelas propriedades de 
-SVD, pode-se encontrar que a matriz $B_k$ possui aproximação 
+\paragraph{Ideia de prova} $\\$ Podemos construir a matriz $B_k$ somente
+com os vetores dos primeiros $k$ tipos da matriz A. Pelas propriedades dos
+valores singulares e auto-valores , pode-se encontrar que a matriz $B_k$ possui aproximação 
 
 \begin{equation}
 \Vert A - B_k\Vert^2_F \leq ( 1 - \lambda ) \Vert A \Vert^2_F.
@@ -187,18 +178,17 @@ aproximação pelo menos igual a anterior.
 \subsection{Desvio nas utilidades dos produtos}
 
 Consideraremos que a partir da matriz $A$ proposta na subseção anterior, é
-adicionado um erro, pois no mundo real, os produtos não possuem exatamente
-a mesma utilidade para todos usuários do mesmo tipo.
-
- Modelaremos o erro adicionando à matriz $A$ uma matriz de erro $E$ tal
+adicionado um erro, pois observa-se que os produtos não possuem exatamente
+a mesma utilidade para todos usuários do mesmo tipo, mas que estas são 
+semelhantes.\\ \\
+Modelaremos o erro adicionando à matriz $A$ uma matriz de erro $E$ tal
 que $E_{ij}$ é uma variável aleatória de média 0 e variância 
-$O(\frac{\epsilon^2}{m} + n )$ para $0 < \epsilon < 1$.
-
+$O(\frac{\epsilon^2}{m} + n )$ para $0 < \epsilon < 1$. \\ \\
 Chamaremos de $\tilde A$ a matriz $ A + E $.
 
 \subsection{Limitantes na aproximação de posto menor}
 
-O primeiro objetivo é provar que Ã$_k$ e $A$ são próximas, assim poderemos
+O primeiro objetivo é provar que $\hat{A}_k$ e $A$ são próximas, assim poderemos
 recriar de forma eficiente a matriz $A$ e fazer boas recomendações de 
 produtos. 
 
@@ -210,10 +200,13 @@ produtos.
 para alguma constante $\beta_2 = O (\sqrt{\beta_1}))$.
 
 \end{lema}
-\paragraph{Ideia da prova\\}
-Analisando $A_\delta$ e $A_0$, pode-se verificar que $A_\delta A_\delta^T - A_0 A_0^T$ possui 2-norma no máximo $n \delta$.
+\paragraph{Ideia da prova} $\\$ Analisando $A_\delta$ e $A_0$, pode-se verificar que $A_\delta A_\delta^T - A_0 A_0^T$ possui 2-norma no máximo $n \delta$. \\ \\
+Aplicando teoria padrão de perturbação para valores singulares de matrizes
+simétricas, pode-se concluir que os valores singulares de $A_\delta$ são
+perturbados somente por uma constante. Escolhendo $\beta_1$ e $\beta_2$
+cuidadosamente o resultado é válido. 
 
-Aplicando teoria padrão de perturbação para valores singulares de matrizes simétricas, pode-se concluir que os valores singulares de $A_\delta$ são perturbados somente por uma constante. Escolhendo $\beta_1$ e $\beta_2$ cuidadosamente o resultado é válido. 
+$\\ \\ \\$
 
 \begin{lema} 
 Como $\vert E \vert_2 = O(\epsilon)$, com probabilidade  $ 1 - o(1) $
@@ -222,13 +215,12 @@ Como $\vert E \vert_2 = O(\epsilon)$, com probabilidade  $ 1 - o(1) $
 \end{equation}
 \end{lema}
 
-\paragraph{Ideia da prova \\}
-Utilizando o lema anterior e manipuções algébricas, pode-se
+\paragraph{Ideia da prova }$\\$Utilizando o lema anterior e manipuções algébricas, pode-se
 encontrar o resultado proposto
 
 
 $\\ \\ \\$
-Utilizando o lema acima e os lemas do TODO:por bibliografia, obtemos os seguintes corolários:
+Utilizando o lema acima e os lemas de \cite{mchserry}, obtemos os seguintes corolários:
   
 \begin{coro} Com probabilidade $1- o(1)$, temos 
 \begin{equation}
@@ -244,12 +236,12 @@ E se a matriz A é $(\lambda, k)$-efetiva, segue que
 \end{equation}
 \end{coro}
 
+
 \subsection{Ã desconhecida}
 
 Apesar da demonstração que $\tilde A_k$ e $A$ são próximas, um problema é que a
 matriz $\tilde A$ é desconhecida. Nós buscamos agora um algoritmo que com amostra de
-$O(m+n)$ elementos, consiga reconstruir a matriz e dar boas recomendações.
-
+$O(m+n)$ elementos, consiga reconstruir a matriz e dar boas recomendações. \\ \\
 Assume-se que cada tipo efetivo contenha pelo menos $\frac{\lambda m}{100k}$ usuários.
 
 
@@ -270,8 +262,7 @@ Se selecionarmos aleatoriamente $O(k \, ln \, (k) )$ usuários, a probabilidade
 de que algum tipo efetivo não tenha nenhum usuário selecionado é menor que $1\%$.
 \end{lema}
 
-\paragraph{Ideia de prova:} 
-A probabilidade de nenhum usuário do tipo $i$ ser selecionado é $(1 - \frac{t_i}{m})^{ak}$,
+\paragraph{Ideia de prova} $\\$A probabilidade de nenhum usuário do tipo $i$ ser selecionado é $(1 - \frac{t_i}{m})^{ak}$,
 pois a probabilidade de um usuário ser selecionado é uma variável
 aleatória de Bernoulli de parâmetro $\frac{t_i}{m}$. Utilizando o limite da união e selecionando $a = O(log\, k)$, encontramos o limite proposto no enunciado.
 $\\ \\ \\$
@@ -282,8 +273,7 @@ Portanto a partir da escolha das $ak$ linhas, podemos formar uma matriz $V$ de t
 A ideia de escolher um número constante de colunas acontece pois todo usuário
 que deseja obter uma recomendação deve responder inicialmente um pequeno 
 questionário, dando alguma informação sua para que o algoritmo de recomendação
-possa atual de maneira mais precisa e efetiva.
-
+possa atual de maneira mais precisa e efetiva. \\ \\
 A partir da matriz $V$ calculada previamente, podemos selecionar as $\beta k$ colunas de maneira em que cada  
 coluna $i$ tem probabilidade $\frac{\vert V^{(i)} \vert^2}{\Vert V \Vert^2_F}$ de ser selecionada. Com 
 isso, escolheremos os produtos "mais pesados", que ajudarão a decidir se um usuário está ou não naquele tipo.
@@ -297,10 +287,8 @@ de x de utilidade de um usuário, pode-se aproximar $V x$ por \~v tal que
 com probabilidade $1 - p$, $0 < p < 1$.
 \end{lema}
 
-\paragraph{Ideia da prova\\}
-
-Seja a aproximação $\tilde v$ tal que $\tilde v_i = \frac {V^{(i)}}{\sqrt{(\beta k p_i)}} \frac{x_i}{\sqrt{(\beta k p_i)}}$.
- A partir disso podemos provar a aproximação de $\tilde v$ e $Vx$ aplicando a desgualdade de Markov para a variável 
+\paragraph{Ideia da prova} $\\$ Seja a aproximação $\tilde v$ tal que $\tilde v_i = \frac {V^{(i)}}{\sqrt{(\beta k p_i)}} \frac{x_i}{\sqrt{(\beta k p_i)}}$.
+Podemos provar a aproximação de $\tilde v$ e $Vx$ aplicando a desgualdade de Markov para a variável 
 aleatória $\tilde v$.
 
 
@@ -313,15 +301,15 @@ algoritmo é $\lambda$-competitivo  para utilidade.
 \subsection{Aproximando por amostras}
 
 Agora será descrito um algoritmo para matriz em que não assumimos as restrições
-do algoritmo anterior. Somente será necessário que a matriz $A$ tenha uma boa 
-aproximação com $A_k$.
+do do modelo requeridas pelo algoritmo anterior. Somente será necessário que a
+matriz $A$ tenha uma boa aproximação com $A_k$.
 
 \subsubsection{Algoritmo}
 
-1. Seleciona $r$ linhas de maneira uniforme \\
+1. Selecionar $r$ linhas de maneira uniforme \\
 2. Selecionar $c$ colunas de onde a probabilidade de selecionar uma coluna $j$ ser selecionada
 é  $q_j \geq \vert \frac{A^{(j)} \vert^2}{\Vert A \Vert^2_F}$ \\
-3. Montar a matriz C com as colunas $\frac{A^(j)}{sqrt(cq_j)}$, $j = 1 .. c$. \\
+3. Montar a matriz C com as colunas $\frac{A^{(j)}}{\sqrt{cq_j}}$, $j = 1 .. c$. \\
 4. Encontrar os k primeiros vetores singulares de C, denotados por $U_k$. \\
 5. Criar a matriz Ã tal que 
 $\tilde A_{(i)}  = \frac{A_{(i)}}{rm}$, se i foi uma linha selecionada ou $0^n$ caso contrário. \\
@@ -329,7 +317,7 @@ $\tilde A_{(i)}  = \frac{A_{(i)}}{rm}$, se i foi uma linha selecionada ou $0^n$ 
 
 
 \begin{teo}
-Seja $\sigma_t$ o $t-ésimo$ valor singular de A e $\rho$ é o posto de A. Utilizando
+Seja $\sigma_t$ o $t$-ésimo valor singular de A e $\rho$ é o posto de A. Utilizando
 o algoritmo proposto acima, 
 \begin{equation}
 E(\Vert A - \tilde U_k \tilde U_k^T \tilde A \Vert^2_F) \leq \sum_{t = k + 1}^\rho \sigma_t^2 + 
@@ -337,8 +325,8 @@ E(\Vert A - \tilde U_k \tilde U_k^T \tilde A \Vert^2_F) \leq \sum_{t = k + 1}^\r
 \end{equation}
 \end{teo}
 
-\paragraph{Ideia de prova\\} 
-Utilizando os lemas da TODO:referencia e  analizando TODO:terminar
+\paragraph{Ideia de prova} $\\$ Utilizando os lemas de \cite{drineas2} e manipulação algébrica, 
+pode-se encontrar o resultado proposto.
 
 \newpage
 
@@ -346,18 +334,14 @@ Utilizando os lemas da TODO:referencia e  analizando TODO:terminar
 
 \subsection{Introdução}
 Ao contrário da estratégia anterior, baseada em SVD, que é computacionalmente
-intensa, esta abordagem utiliza algoritmos combinatórios simples. 
-
+intensa, esta abordagem utiliza algoritmos combinatórios simples. \\ \\ 
 Nesta instância do problema, a utilidade do produto é um valor binário, ou seja,
-cada produto é categorizado como bom ou ruim .
-
-Nós chamamos bom(u) o conjunto de todos os produtos que são considerados bons
-pelo usuário u.
-
-Neste algoritmo de recomendação possui a única operação atômica de devolver um
+cada produto é categorizado como bom ou ruim . Nós chamamos bom(u) o conjunto de
+todos os produtos que são considerados bons pelo usuário u. \\ \\
+Este algoritmo de recomendações possui a operação atômica de devolver um
 produto para um usuário e perguntar qual a avaliação do mesmo sobre o produto.
 É dito que um usuário $u$ prova um produto $p$  quando o algoritmo recomenda
-o produto $p$ ao usuário $u$ e aprende se $p \ in bom(u)$  
+o produto $p$ ao usuário $u$ e aprende se $p \in bom(u)$
 
 \subsubsection{Qualidade do algoritmo de recomendação}
 A performance do algoritmo é medida através de 3 métricas: a tradicional
@@ -394,54 +378,68 @@ Seja $\mathcal{T}$ uma coleção de tipos, $U(\mathcal{T}) = \bigcup _{T \in \ma
 \end{definicao}
 
 \begin{definicao}
-Seja $0 < \lambda \leq 1$ e $k > 0$. Uma coleção de tipos $\mathcal{T}$ é uma $(\lambda, k)$-cobertura-de-tipos se $\vert U(\mathcal{T}) \vert \geq \lambda m$ e $\vert  U(T) \vert \geq \frac{m}{k}$ para todo tipo $T$ de $\mathcal{T}$. 
+Seja $0 < \lambda \leq 1$ e $k > 0$. Uma coleção de tipos $\mathcal{T}$ é uma 
+$(\lambda, k)$-cobertura-de-tipos se $\vert U(\mathcal{T}) \vert \geq \lambda m$ e $\vert 
+U(T) \vert \geq \frac{m}{k}$ para todo tipo $T$ de $\mathcal{T}$. 
 \end{definicao}
 
 \subsection{Análise do algoritmo}
 
 \begin{teo}
-  Seja $\gamma > 0 $. Se existir uma $(\lambda, k)$-cobertura-de-tipos para algum $\lambda > 0 $ e $k > 0$, então com probabilidade pelo menos $1 - \gamma$ o algoritmo $\mathcal{A}_centr(k, \gamma)$ gera um conjunto de recomendações que satisfaz $\lambda m$ usuários com complexidade de recomendação e tempo de $O(k(m+n)log\frac{k}{\gamma})$.
+Seja $\gamma > 0 $. Se existir uma $(\lambda, k)$-cobertura-de-tipos para algum $\lambda > 0 $ e
+$k > 0$, então com probabilidade pelo menos $1 - \gamma$ o algoritmo $\mathcal{A}_{cntr}(k, \gamma)$
+gera um conjunto de recomendações que satisfaz $\lambda m$ usuários com complexidade de recomendação e
+tempo de $O(k(m+n)log\frac{k}{\gamma})$.
 \end{teo}
 
-\paragraph{Ideia da prova\\}
-A probabilidade que nenhum usuário de um tipo $T \in \mathcal{T}$ seja escolhido
+\paragraph{Ideia da prova} $\\$ A probabilidade que nenhum usuário de um tipo $T \in \mathcal{T}$ seja escolhido
 para o comitê é ao máximo
 \begin{equation}
 (1 - \frac{1}{k})^K = (1 - \frac{1}{k})^{k \, ln \frac{k}{\gamma}} \leq \frac{\gamma}{k}
 \end{equation}
 
 O resultado do teorema resulta do limite limite da união para os
-no máximo $k$ tipos de $\mathcal{T}$ e o vato que $\vert U(\mathcal{T}) \vert \geq \lambda m$
+no máximo $k$ tipos de $\mathcal{T}$ e o fato que $\vert U(\mathcal{T}) \vert \geq \lambda m$
 $\\ \\ $
 \begin{teo}
-  Seja $\gamma > 0$. Se existe uma $(\gamma, k)-cobertura-de-tipos \mathcal{T}$
+  Seja $\gamma > 0$. Se existe uma $(\gamma, k)-cobertura-de-tipos$  $\mathcal{T}$
 para algum $\lambda > 0$ e $k > 0$, então a complexidade de recomendação
 individual para usuários em $\mathcal{T}$ é de $O(k(1 + \frac{n \, log \, \frac{k}{\gamma}}{m}))$
 \end{teo}
 
-\paragraph{Ideia da prova\\}
-Primeiramente separa-se os casos em que há alguém do tipo do usuário
-no comitê e quando não há.
-
-Para o caso em que não há, o usuário terá que fazer $K$ provas.
-
-Para o caso em que há alguém do tipo do usuário, como a ordem dos produtos
+\paragraph{Ideia da prova} $\\$ Primeiramente separa-se os casos em que o usuário faz parte do comitê e quando
+o usuário não faz \\ \\
+Para o caso em que o usuário faz parte do comitê, ele terá que fazer $K$ provas.\\ \\
+Para o caso em que o usuário não está no comitê, é calculada a esperança do número 
+de provas que ele terá que fazer. Como a ordem dos produtos
 recomendados é aleatória, o número de provas que um usuário terá que fazer
 é uma variável aleatória geométrica. Logo, basta fazer a análise da esperança
-para essa variável aleatória.
-
+para essa variável aleatória.\\ \\
 O resultado do teorema aparece com a esperança do número de provas para
 cada caso.
 
 \subsection{Comitê}
 A técnica de criar um comitê do algoritmo proposto possui sérias
-desvantagens já que a complexidade de recomendação individual
+desvantagens. \\ \\
+A primeira delas é que a complexidade de recomendação individual
 é $\Omega(n)$, já que os usuários do comitê tem que provar todos os
-algoritmos.
-
-O segundo ponto contra esta técnica é a existência de usuários desonestos,
+algoritmos. \\ \\
+Um segundo ponto contra esta técnica é a existência de usuários desonestos,
 que, quando escolhidos para o comitê, atrapalham o funcionamento do 
 algoritmo de recomendações.
+
+
+\newpage
+
+\section{Conclusão e trabalhos futuros}
+Através deste estudo, verificou-se a existência de soluções com abordagens
+totalmente diferentes para o problema de sistemas de recomendações. Mas o mais
+importante foi o aprendizado das técnicas mais gerais para resolução de problemas
+como por exemplo SVD. \\ \\
+Potenciais trabalhos futuros são a implementação e comparação dos algoritmos na prática
+ou alteração neles para que ao invés de dispor de informações de colunas inteiras, os
+algoritmos funcionem com posições esparsas na matriz. 
+
 
 \newpage
 
