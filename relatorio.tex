@@ -13,6 +13,12 @@
 
 \maketitle
 
+\newpage
+
+\tableofcontents
+
+\newpage
+
 \newtheorem{definicao}{Definição}
 \newtheorem{lema}{Lema}
 \newtheorem{coro}{Corolário}
@@ -22,46 +28,67 @@
 \section{Introdução}
 
 O objetivo deste relatório é descrever os assuntos estudados durante a 
-disciplina de MC032 no segundo semestre de 2010. 
-
-O principal interesse deste trabalho foi pesquisar na listeratura este
+disciplina de MC032 no segundo semestre de 2010.  \\ \\ 
+O principal interesse deste trabalho foi pesquisar na literatura este
 problema diferentes abordagens para resolvê-lo.
 
-TODO:explicar estrutura do relatório
+Na seção \ref{sec:sistemas_rec} é descrito brevemente em linhas gerais
+o que é um sistema de recomendações.
+
+Nas seções ~\ref{sec:competitive} e ~\ref{sec:improved} são mostradas as
+principais ideias encontradas nos trabalhos  \cite{drineas} e \cite{baruch},
+respectivamente.
 
 \newpage
 
-\section{Sistemas de recomendações}
+\section{Sistemas de recomendações}\label{sec:sitemas_rec}
 
 Um sistema de recomendação considera quais produtos cada usuário
 escolheu no passado e tenta deduzir que outros produtos um determinado
 usuário pode estar interessado. 
 
+Para isso, ele se baseia também em respostas já conhecidas de outros 
+usuários, para utilizar como comparação à informação que já dispõe
+do usuário que receberá a recomendação.
+
 \newpage
 
-\section{Competitive Recommendation Systems}
+\section{Competitive Recommendation Systems}\label{competitive}
 
 \subsection{Introdução}
 
 A ideia básica desta abordagem é reduzir o problema de sistema de recomendações
 no problema de reconstrução de matrizes a partir de informações parciais da mesma. 
-Foram utilizadas estratégias de reconstrução a partir de técnicas de SVD, encontrando
-aproximações para a matriz original 
+Foram utilizadas estratégias de reconstrução de matrizes a partir
+informações parciais baseadas na técnica de SVD, encontrando boas aproximações
+para a matriz original 
 
 \subsubsection{Divisão em tipos}
-É considerado que os usuários podem ser divididos em grupos com interesses semelhantes,
-classificando-os em tipos. Consideraremos que $k$ seja o número de tipos, onde $k$ é
+Assume-se que os usuários podem ser divididos em grupos com interesses semelhantes,
+classificando-os em tipos. \\ 
+
+Consideraremos que $k$ seja o número de tipos, onde $k$ é
 uma constante que não depende do número de usuários.
 
 \subsubsection{Qualidade dos algoritmos}
 
 Um bom algoritmo de recomendações deve dar boas recomendações utilizando o mínimo de 
-informação possível. Para isso são estabelecidas 2 métricas para algoritmos de 
-recomendações: um algoritmo é $c-competitivo$ $para$ $amostragem$ se usa somente $ck$
-linhas e colunas da matriz para recomendar mais produtos; um algoritmo é $f-competitivo$ $para$ $utilidade$
+informação possível. Para medir a qualidade de um algoritmo de recomendação
+são estabelecidas 2 métricas para algoritmos de recomendações.
+
+\begin{definicao}
+ Um algoritmo é $c-competitivo$ $para$ $amostragem$ se usa somente $ck$
+linhas e colunas da matriz para recomendar mais produtos.
+\end{definicao}
+
+\begin{definicao}
+Um algoritmo é $f-competitivo$ $para$ $utilidade$
 se faz boas recomendações a $fm$ usuários, onde $m$ é o número de usuários. 
+\end{definicao}
 
 \subsection{Notação}
+
+Nesta seção, a seguinte notação será utilizada:
 
 \begin{itemize}
 \item[$A$] matriz de recomendação original
@@ -79,7 +106,7 @@ para o \\ usuário $i$
 
 \subsubsection{Boas recomendações}
 \begin{definicao} \label{definicao:box} Um produto j é dito bom para um
-usuário $i$ se $A_{ij} > a_{ir} - \delta$para o $r$ constante e $\delta$ pequeno.
+usuário $i$ se $A_{ij} > a_{ir} - \delta$ para $r$ constante e $\delta$ pequeno.
 \end{definicao}
 \begin{definicao} \label{definicao:box}Uma recomendação é dita boa para um usuário
 $i$ se contém pelo menos um produto bom para aquele usuário.
@@ -88,7 +115,7 @@ $i$ se contém pelo menos um produto bom para aquele usuário.
 \subsubsection{Reconstrução de matrizes e boas recomendações}
 
 \begin{lema} \label{lema:box}
-Dado que existe uma aproximação Â tal que $\Vert A - hat{A} \Vert \le \epsilon \Vert A
+Dado que existe uma aproximação Â tal que $\Vert A - \hat{A} \Vert \le \epsilon \Vert A
 \Vert^2_F$, a probabilidade de uma recomenda\c{c}\~ao
 ruim é 
 \begin{equation}
@@ -100,7 +127,7 @@ Pr [ recomenda \c{c}c \tilde ao \;\; ruim ] \leq \frac{2\varepsilon}{r\delta^2}
 \paragraph{Ideia da prova\\}
 
 A menor contribuição de uma recomendação ruim para o erro de $\Vert A - 
-hat{A} \Vert$ é quando os $r$ produtos com maior utilidade 
+\hat{A} \Vert$ é quando os $r$ produtos com maior utilidade 
 de $A_{(i)}$ possuem valor igual a $u$ e os $r$ produtos com maior utilidade
 dentre os outros produtos possuem utilidade $u - \delta$.
  
@@ -118,7 +145,7 @@ Assumimos que existem $l$ tipos de usuários, caracterizados
 pelos vetores $v^{(1)}$, ..., $v^{(l)} \in $ [$0,1$]$^n$, 
 e que cada vetor é unitário. 
 
-Assumimos também qeu os vetores são  "bem separados", o que
+Assumimos também que os vetores são  "bem separados", o que
 intuitivamente significa que os tipos são linearmente independentes. 
 
 \begin{definicao} \label{definicao:box} Os vetores $v^{(1)}$, ..., $v^{(l)}$
@@ -313,20 +340,44 @@ E(\Vert A - \tilde U_k \tilde U_k^T \tilde A \Vert^2_F) \leq \sum_{t = k + 1}^\r
 \paragraph{Ideia de prova\\} 
 Utilizando os lemas da TODO:referencia e  analizando TODO:terminar
 
+\newpage
+
 \section{Improved Recommendation System}
 
 \subsection{Introdução}
 Ao contrário da estratégia anterior, baseada em SVD, que é computacionalmente
 intensa, esta abordagem utiliza algoritmos combinatórios simples. 
 
-
-\subsection{Descrição}
-
 Nesta instância do problema, a utilidade do produto é um valor binário, ou seja,
 cada produto é categorizado como bom ou ruim .
 
 Nós chamamos bom(u) o conjunto de todos os produtos que são considerados bons
 pelo usuário u.
+
+Neste algoritmo de recomendação possui a única operação atômica de devolver um
+produto para um usuário e perguntar qual a avaliação do mesmo sobre o produto.
+É dito que um usuário $u$ prova um produto $p$  quando o algoritmo recomenda
+o produto $p$ ao usuário $u$ e aprende se $p \ in bom(u)$  
+
+\subsubsection{Qualidade do algoritmo de recomendação}
+A performance do algoritmo é medida através de 3 métricas: a tradicional
+complexidade de tempo; a complexidade de recomendação, que é o total de 
+vezes que usuários provam produtos; e complexidade de recomendação 
+individual, que é o pior caso do número de vezes que um usuário prova
+um produto.
+
+\subsection{Algoritmo centralizado}
+
+\paragraph{Algoritmo $\mathcal{A}_{cntr} (k, \lambda)$ \\}
+$\\$
+1. Seja $K = k \, ln \, \frac{k}{\lambda} $ \\
+2. Selecione um comitê de $K$ usuários \\
+3. Faça cada usuário $u$ pertencente ao comitê provar todos os produtos, 
+e seja $p_u$ o produto melhor avaliado pelo usuário $u$ ( desempates ocorrem)
+arbitrariamente \\
+4. Devolva os melhores produtos avaliados pelo comitê
+
+\subsection{Separação de tipos}
 
 Para analisar o algoritmo, assume-se que os usuários estão particionados em
 classes de equivalências denominadas tipos, onde cada tipo representa um conjunto
@@ -346,12 +397,54 @@ Seja $\mathcal{T}$ uma coleção de tipos, $U(\mathcal{T}) = \bigcup _{T \in \ma
 Seja $0 < \lambda \leq 1$ e $k > 0$. Uma coleção de tipos $\mathcal{T}$ é uma $(\lambda, k)$-cobertura-de-tipos se $\vert U(\mathcal{T}) \vert \geq \lambda m$ e $\vert  U(T) \vert \geq \frac{m}{k}$ para todo tipo $T$ de $\mathcal{T}$. 
 \end{definicao}
 
+\subsection{Análise do algoritmo}
 
 \begin{teo}
   Seja $\gamma > 0 $. Se existir uma $(\lambda, k)$-cobertura-de-tipos para algum $\lambda > 0 $ e $k > 0$, então com probabilidade pelo menos $1 - \gamma$ o algoritmo $\mathcal{A}_centr(k, \gamma)$ gera um conjunto de recomendações que satisfaz $\lambda m$ usuários com complexidade de recomendação e tempo de $O(k(m+n)log\frac{k}{\gamma})$.
 \end{teo}
 
-\addcontentsline{toc}{section}{\bibname}
+\paragraph{Ideia da prova\\}
+A probabilidade que nenhum usuário de um tipo $T \in \mathcal{T}$ seja escolhido
+para o comitê é ao máximo
+\begin{equation}
+(1 - \frac{1}{k})^K = (1 - \frac{1}{k})^{k \, ln \frac{k}{\gamma}} \leq \frac{\gamma}{k}
+\end{equation}
+
+O resultado do teorema resulta do limite limite da união para os
+no máximo $k$ tipos de $\mathcal{T}$ e o vato que $\vert U(\mathcal{T}) \vert \geq \lambda m$
+$\\ \\ $
+\begin{teo}
+  Seja $\gamma > 0$. Se existe uma $(\gamma, k)-cobertura-de-tipos \mathcal{T}$
+para algum $\lambda > 0$ e $k > 0$, então a complexidade de recomendação
+individual para usuários em $\mathcal{T}$ é de $O(k(1 + \frac{n \, log \, \frac{k}{\gamma}}{m}))$
+\end{teo}
+
+\paragraph{Ideia da prova\\}
+Primeiramente separa-se os casos em que há alguém do tipo do usuário
+no comitê e quando não há.
+
+Para o caso em que não há, o usuário terá que fazer $K$ provas.
+
+Para o caso em que há alguém do tipo do usuário, como a ordem dos produtos
+recomendados é aleatória, o número de provas que um usuário terá que fazer
+é uma variável aleatória geométrica. Logo, basta fazer a análise da esperança
+para essa variável aleatória.
+
+O resultado do teorema aparece com a esperança do número de provas para
+cada caso.
+
+\subsection{Comitê}
+A técnica de criar um comitê do algoritmo proposto possui sérias
+desvantagens já que a complexidade de recomendação individual
+é $\Omega(n)$, já que os usuários do comitê tem que provar todos os
+algoritmos.
+
+O segundo ponto contra esta técnica é a existência de usuários desonestos,
+que, quando escolhidos para o comitê, atrapalham o funcionamento do 
+algoritmo de recomendações.
+
+\newpage
+
 \bibliographystyle{plain}
-\bibliography{balancedAllocation}
+\bibliography{relatorio}
 \end{document}
